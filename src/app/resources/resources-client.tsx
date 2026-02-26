@@ -11,7 +11,7 @@ interface ResourcesClientProps {
   userId: string | null;
 }
 
-const CATEGORIES = ["General", "Frontend", "Backend", "DevOps", "AI/ML", "System Design", "Career"];
+const CATEGORIES = ["General", "Frontend", "Backend", "DevOps", "AI/ML", "System Design", "Career", "DSA"];
 
 export function ResourcesClient({ initialResources, userId }: ResourcesClientProps) {
   const [showForm, setShowForm] = useState(false);
