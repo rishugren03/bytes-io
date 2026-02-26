@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id                String    @id @db.Uuid
+  updatedAt         DateTime? @map("updated_at") @db.Timestamptz(6)
+  username          String?   @unique
+  fullName          String?   @map("full_name")
+  avatarUrl         String?   @map("avatar_url")
+  website           String?
+  githubUsername    String?   @map("github_username")
+  leetcodeUsername  String?   @map("leetcode_username")
+  techStack         String[]  @map("tech_stack")
+  powerScore        Int       @default(0) @map("power_score")
+  bio               String?
+  projects          Project[]
+
+  @@map("profiles")
+}
+
+model Project {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  ownerId     String   @map("owner_id") @db.Uuid
+  title       String
+  description String?
+  repoUrl     String?  @map("repo_url")
+  demoUrl     String?  @map("demo_url")
+  stars       Int      @default(0)
+  tags        String[]
+  status      String   @default("planning")
+  owner       Profile  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@map("projects")
+}

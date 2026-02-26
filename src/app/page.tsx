@@ -1,65 +1,180 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Users, Code, Zap, ArrowRight, Github } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+const typewriterText = "Initializing Codewave...";
 
 export default function Home() {
+  const [displayText, setDisplayText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayText(typewriterText.slice(0, i));
+      i++;
+      if (i > typewriterText.length) clearInterval(interval);
+    }, 100);
+
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(cursorInterval);
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="space-y-24">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="space-y-4"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono uppercase tracking-widest">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            System Online
+          </div>
+          
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter text-white">
+            Where Code Meets <br />
+            <span className="text-primary italic">Momentum.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          
+          <div className="font-mono text-xl text-white/50 h-8">
+            {displayText}
+            {showCursor && <span className="text-primary">|</span>}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="flex flex-col sm:flex-row gap-4"
+        >
+          <Link
+            href="/login"
+            className="group relative flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-black font-semibold overflow-hidden transition-all hover:scale-105 active:scale-95"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 ease-in-out" />
+            Join the Registry
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+          
+          <Link
+            href="/projects"
+            className="flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/10 bg-white/5 text-white font-semibold backdrop-blur-sm transition-all hover:bg-white/10 active:scale-95"
           >
-            Documentation
-          </a>
+            View Showcase
+          </Link>
+        </motion.div>
+      </section>
+
+      {/* Live Stats Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard 
+          icon={<Users className="text-primary" />}
+          label="Active Members"
+          value="1,248"
+          description="Engineers shipping daily"
+          delay={0.2}
+        />
+        <StatCard 
+          icon={<Code className="text-primary" />}
+          label="Projects Shipped"
+          value="45+"
+          description="Open source & internal tools"
+          delay={0.4}
+        />
+        <StatCard 
+          icon={<Zap className="text-primary" />}
+          label="Lines of Code"
+          value="2.1M"
+          description="Commits across 120 repos"
+          delay={0.6}
+        />
+      </section>
+
+      {/* Feature Highlight */}
+      <section className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-12 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] -mr-32 -mt-32 rounded-full" />
+        <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-white">The "Engineer-Core" Lifestyle</h2>
+            <p className="text-white/60 leading-relaxed">
+              Codewave isn't just a club; it's an accelerator for your technical career. 
+              Sync your GitHub, climb the seasonal leaderboard, and master technologies 
+              through our interactive Skill Tree.
+            </p>
+            <div className="flex gap-4">
+               <div className="flex -space-x-3">
+                  {[1,2,3,4].map(i => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 flex items-center justify-center text-[10px] text-white overflow-hidden">
+                       <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
+                    </div>
+                  ))}
+               </div>
+               <div className="text-sm text-white/40 flex flex-col justify-center font-mono">
+                  <span>+240 online</span>
+               </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">Season 04</div>
+                <div className="text-white font-bold">Hackathon Portal</div>
+             </div>
+             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">New</div>
+                <div className="text-white font-bold">Skill Tree v2</div>
+             </div>
+             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">Live</div>
+                <div className="text-white font-bold">Leaderboard</div>
+             </div>
+             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">Beta</div>
+                <div className="text-white font-bold">Mentorship</div>
+             </div>
+          </div>
         </div>
-      </main>
+      </section>
     </div>
+  );
+}
+
+function StatCard({ icon, label, value, description, delay }: { icon: React.ReactNode, label: string, value: string, description: string, delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.5 }}
+      whileHover={{ y: -5 }}
+      className="p-8 rounded-3xl border border-white/10 bg-white/[0.02] group transition-all hover:bg-white/[0.04] hover:border-primary/20 relative overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity blur-3xl -z-10" />
+      <div className="flex items-center gap-4 mb-4">
+        <div className="p-2 rounded-xl bg-primary/10 border border-primary/20">
+          {icon}
+        </div>
+        <span className="text-white/40 font-mono text-sm tracking-widest uppercase">{label}</span>
+      </div>
+      <div className="text-4xl font-bold text-white mb-2">{value}</div>
+      <p className="text-white/40 text-sm leading-relaxed">{description}</p>
+    </motion.div>
   );
 }
