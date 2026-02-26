@@ -29,8 +29,8 @@ export function MembersClient({ initialMembers }: MembersClientProps) {
              Member Registry
           </h1>
           <p className="text-white/40 font-mono text-sm max-w-xl">
-             The tactical database of all club engineers. Powered by GitHub 
-             contributions and seasonal power levels.
+             The directory of all Bytes.io engineers. Powered by GitHub 
+              contributions and power scores.
           </p>
         </div>
         

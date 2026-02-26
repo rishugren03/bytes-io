@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Codewave Portal | Silicon Valley SaaS for Engineers",
-  description: "The official engineer-core portal for the college coding club. Competitive dashboards, project showcases, and developer registries.",
+  title: "Bytes.io | The Engineer Platform",
+  description: "The engineer platform. Competitive dashboards, project showcases, developer registries, and mentorship.",
 };
 
 export default function RootLayout({

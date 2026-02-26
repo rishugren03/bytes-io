@@ -19,15 +19,15 @@ export function LeaderboardClient({ users, currentUser }: LeaderboardClientProps
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] uppercase font-mono tracking-widest">
-                Season 04 • Active Until March 30
+                Season 01 • Just Launched
              </div>
              <h1 className="text-4xl font-bold tracking-tight text-white font-mono">
                 <span className="text-primary mr-2">{">"}</span>
                 Global Leaderboard
              </h1>
              <p className="text-white/40 font-mono text-sm max-w-xl">
-                Real-time ranking of Codewave engineers based on GitHub contributions, 
-                LeetCode solves, and club contest performance.
+                Real-time ranking of Bytes.io engineers based on GitHub contributions, 
+                LeetCode solves, and project contributions.
              </p>
           </div>
           
@@ -126,10 +126,10 @@ export function LeaderboardClient({ users, currentUser }: LeaderboardClientProps
             <div className="absolute top-0 right-0 p-4 opacity-10">
                <Trophy size={80} />
             </div>
-            <h3 className="text-xl font-bold text-white">Season 04 Rewards</h3>
-            <p className="text-white/40 text-sm leading-relaxed">
-               Top 10 engineers will receive exclusive "Core-Contributor" NFT badges and early access to the 2026 Summer Internship pipeline.
-            </p>
+             <h3 className="text-xl font-bold text-white">Season 01 Rewards</h3>
+             <p className="text-white/40 text-sm leading-relaxed mb-4">
+                Top engineers will receive exclusive recognition and early access to mentorship opportunities.
+             </p>
             <Button variant="outline" className="border-white/10 text-white">View Reward Tiers</Button>
          </div>
          <div className="p-8 rounded-3xl border border-white/5 bg-white/[0.02] space-y-4 relative overflow-hidden">

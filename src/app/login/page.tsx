@@ -39,7 +39,7 @@ export default function LoginPage() {
             Authenticate <span className="text-primary italic">Identity.</span>
          </h1>
          <p className="text-white/40 font-mono text-sm max-w-sm mx-auto">
-            Codewave uses GitHub for engineer verification. Your session will be 
+            Bytes.io uses GitHub for engineer verification. Your session will be 
             secured with end-to-end encryption.
          </p>
       </header>
@@ -72,7 +72,7 @@ export default function LoginPage() {
                <span className="text-xs font-bold uppercase tracking-widest">Protected Environment</span>
             </div>
             <p className="text-[10px] text-white/40 leading-relaxed font-mono">
-               By continuing, you agree to allow Codewave to sync your public GitHub 
+               By continuing, you agree to allow Bytes.io to sync your public GitHub 
                contributions and repositories for your Power Score.
             </p>
          </div>

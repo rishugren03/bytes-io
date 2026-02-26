@@ -25,7 +25,6 @@ const navItems = [
   { name: "Registry", href: "/members", icon: Users },
   { name: "Showcase", href: "/projects", icon: Code2 },
   { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
-  { name: "Skills", href: "/skills", icon: Map },
   { name: "Library", href: "/resources", icon: Library },
   { name: "Events", href: "/hackathons", icon: Network },
   { name: "Mentors", href: "/mentorship", icon: ShieldCheck },

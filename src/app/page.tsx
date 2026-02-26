@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Users, Code, Zap, ArrowRight, Github } from "lucide-react";
+import { Users, Code, Zap, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
-const typewriterText = "Initializing Codewave...";
+const typewriterText = "Initializing Bytes.io...";
 
 export default function Home() {
   const [displayText, setDisplayText] = useState("");
@@ -88,22 +87,22 @@ export default function Home() {
         <StatCard 
           icon={<Users className="text-primary" />}
           label="Active Members"
-          value="1,248"
-          description="Engineers shipping daily"
+          value="—"
+          description="Join the first wave"
           delay={0.2}
         />
         <StatCard 
           icon={<Code className="text-primary" />}
           label="Projects Shipped"
-          value="45+"
-          description="Open source & internal tools"
+          value="0"
+          description="Be the first to ship"
           delay={0.4}
         />
         <StatCard 
           icon={<Zap className="text-primary" />}
-          label="Lines of Code"
-          value="2.1M"
-          description="Commits across 120 repos"
+          label="Power Score"
+          value="0"
+          description="Start building your score"
           delay={0.6}
         />
       </section>
@@ -113,40 +112,28 @@ export default function Home() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] -mr-32 -mt-32 rounded-full" />
         <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-white">The "Engineer-Core" Lifestyle</h2>
+            <h2 className="text-3xl font-bold text-white">The &quot;Engineer-Core&quot; Lifestyle</h2>
             <p className="text-white/60 leading-relaxed">
-              Codewave isn't just a club; it's an accelerator for your technical career. 
-              Sync your GitHub, climb the seasonal leaderboard, and master technologies 
-              through our interactive Skill Tree.
+              Bytes.io is an accelerator for your technical career. 
+              Sync your GitHub, climb the leaderboard, showcase your 
+              projects, and connect with mentors.
             </p>
-            <div className="flex gap-4">
-               <div className="flex -space-x-3">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 flex items-center justify-center text-[10px] text-white overflow-hidden">
-                       <img src={`https://i.pravatar.cc/100?u=${i}`} alt="user" />
-                    </div>
-                  ))}
-               </div>
-               <div className="text-sm text-white/40 flex flex-col justify-center font-mono">
-                  <span>+240 online</span>
-               </div>
-            </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
-                <div className="text-primary text-xs font-mono uppercase tracking-tighter">Season 04</div>
-                <div className="text-white font-bold">Hackathon Portal</div>
-             </div>
-             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
-                <div className="text-primary text-xs font-mono uppercase tracking-tighter">New</div>
-                <div className="text-white font-bold">Skill Tree v2</div>
-             </div>
              <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
                 <div className="text-primary text-xs font-mono uppercase tracking-tighter">Live</div>
                 <div className="text-white font-bold">Leaderboard</div>
              </div>
              <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
-                <div className="text-primary text-xs font-mono uppercase tracking-tighter">Beta</div>
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">New</div>
+                <div className="text-white font-bold">Project Showcase</div>
+             </div>
+             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">Live</div>
+                <div className="text-white font-bold">Events Portal</div>
+             </div>
+             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
+                <div className="text-primary text-xs font-mono uppercase tracking-tighter">New</div>
                 <div className="text-white font-bold">Mentorship</div>
              </div>
           </div>

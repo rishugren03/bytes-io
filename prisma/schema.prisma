@@ -7,34 +7,85 @@ datasource db {
 }
 
 model Profile {
-  id                String    @id @db.Uuid
-  updatedAt         DateTime? @map("updated_at") @db.Timestamptz(6)
-  username          String?   @unique
-  fullName          String?   @map("full_name")
-  avatarUrl         String?   @map("avatar_url")
+  id                String          @id @db.Uuid
+  updatedAt         DateTime?       @map("updated_at") @db.Timestamptz(6)
+  username          String?         @unique
+  fullName          String?         @map("full_name")
+  avatarUrl         String?         @map("avatar_url")
   website           String?
-  githubUsername    String?   @map("github_username")
-  leetcodeUsername  String?   @map("leetcode_username")
-  techStack         String[]  @map("tech_stack")
-  powerScore        Int       @default(0) @map("power_score")
+  githubUsername    String?         @map("github_username")
+  leetcodeUsername  String?         @map("leetcode_username")
+  techStack         String[]        @map("tech_stack")
+  powerScore        Int             @default(0) @map("power_score")
   bio               String?
+  role              String          @default("member") // "member" | "admin"
   projects          Project[]
+  events            Event[]         @relation("EventCreator")
+  resources         Resource[]      @relation("ResourceCreator")
+  ratings           ProjectRating[] @relation("UserRatings")
 
   @@map("profiles")
 }
 
 model Project {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  ownerId     String   @map("owner_id") @db.Uuid
-  title       String
-  description String?
-  repoUrl     String?  @map("repo_url")
-  demoUrl     String?  @map("demo_url")
-  stars       Int      @default(0)
-  tags        String[]
-  status      String   @default("planning")
-  owner       Profile  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  ownerId       String          @map("owner_id") @db.Uuid
+  title         String
+  description   String?
+  repoUrl       String?         @map("repo_url")
+  demoUrl       String?         @map("demo_url")
+  stars         Int             @default(0)
+  tags          String[]
+  status        String          @default("planning")
+  averageRating Float           @default(0) @map("average_rating")
+  featured      Boolean         @default(false)
+  owner         Profile         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ratings       ProjectRating[]
 
   @@map("projects")
+}
+
+model Event {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdById String   @map("created_by_id") @db.Uuid
+  title       String
+  description String?
+  eventType   String   @default("hackathon") @map("event_type")
+  startDate   DateTime @map("start_date") @db.Timestamptz(6)
+  endDate     DateTime @map("end_date") @db.Timestamptz(6)
+  location    String?
+  maxTeamSize Int?     @map("max_team_size")
+  prizeInfo   String?  @map("prize_info")
+  status      String   @default("upcoming")
+  createdBy   Profile  @relation("EventCreator", fields: [createdById], references: [id])
+
+  @@map("events")
+}
+
+model Resource {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdById String   @map("created_by_id") @db.Uuid
+  title       String
+  description String?
+  url         String
+  category    String   @default("General")
+  createdBy   Profile  @relation("ResourceCreator", fields: [createdById], references: [id])
+
+  @@map("resources")
+}
+
+model ProjectRating {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  projectId String   @map("project_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  score     Int
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      Profile  @relation("UserRatings", fields: [userId], references: [id])
+
+  @@unique([projectId, userId])
+  @@map("project_ratings")
 }
