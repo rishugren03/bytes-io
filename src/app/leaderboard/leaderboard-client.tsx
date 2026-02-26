@@ -7,9 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+import { Profile } from "@prisma/client";
+
+interface LeaderboardUser extends Profile {
+  rank: number;
+  change: string;
+}
+
 interface LeaderboardClientProps {
-  users: any[];
-  currentUser: any | null;
+  users: LeaderboardUser[];
+  currentUser: LeaderboardUser | null;
 }
 
 export function LeaderboardClient({ users, currentUser }: LeaderboardClientProps) {
@@ -92,14 +99,14 @@ export function LeaderboardClient({ users, currentUser }: LeaderboardClientProps
                           <div className="flex items-center gap-3">
                              <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden bg-zinc-900">
                                 <img 
-                                  src={user.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user.username}`} 
-                                  alt={user.fullName || user.username} 
+                                  src={user.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user.username || 'default'}`} 
+                                  alt={user.fullName || user.username || "Engineer"} 
                                   className="w-full h-full object-cover"
                                 />
                              </div>
                              <div>
-                               <div className="font-bold text-sm tracking-tight">{user.fullName || user.username}</div>
-                               <div className="text-[10px] text-white/40">@{user.username}</div>
+                               <div className="font-bold text-sm tracking-tight">{user.fullName || user.username || "Anonymous Engineer"}</div>
+                               <div className="text-[10px] text-white/40">@{user.username || "anonymous"}</div>
                             </div>
                          </div>
                       </td>

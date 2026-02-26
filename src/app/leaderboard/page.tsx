@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { LeaderboardClient } from "./leaderboard-client";
 import { createClient } from "@/utils/supabase/server";
+import { Profile } from "@prisma/client";
 
 export default async function LeaderboardPage() {
   const supabase = await createClient();
@@ -12,13 +13,13 @@ export default async function LeaderboardPage() {
     }
   });
 
-  const usersWithRank = usersData.map((u, i) => ({
+  const usersWithRank = usersData.map((u: Profile, i: number) => ({
     ...u,
     rank: i + 1,
     change: "minus"
   }));
 
-  const currentUser = user ? usersWithRank.find(u => u.id === user.id) : null;
+  const currentUser = user ? (usersWithRank.find(u => u.id === user.id) ?? null) : null;
 
   return (
     <main>
