@@ -1,7 +1,9 @@
 import prisma from "@/lib/prisma";
 import { LeaderboardClient } from "./leaderboard-client";
 import { createClient } from "@/utils/supabase/server";
-import type { Profile } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
+type Profile = Prisma.ProfileGetPayload<{}>;
 
 export default async function LeaderboardPage() {
   const supabase = await createClient();

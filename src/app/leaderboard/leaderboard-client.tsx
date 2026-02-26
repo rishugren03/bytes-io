@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-import type { Profile } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
+
+type Profile = Prisma.ProfileGetPayload<{}>;
 
 interface LeaderboardUser extends Profile {
   rank: number;
