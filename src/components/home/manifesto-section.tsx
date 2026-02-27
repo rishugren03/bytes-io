@@ -60,17 +60,17 @@ export function ManifestoSection() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-white/[0.02]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full border border-white/[0.02]"
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ repeat: Infinity, duration: 80, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-white/[0.015]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] rounded-full border border-white/[0.015]"
         />
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 100, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full border border-white/[0.01]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] md:w-[1000px] md:h-[1000px] rounded-full border border-white/[0.01]"
         />
       </div>
 
@@ -85,7 +85,7 @@ export function ManifestoSection() {
           <span className="inline-block px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono uppercase tracking-widest mb-6">
             Our Manifesto
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
             Code is our{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-pink-400">
               superpower

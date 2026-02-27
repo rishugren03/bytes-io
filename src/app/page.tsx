@@ -8,7 +8,7 @@ import { Footer } from "@/components/home/footer";
 
 export default function Home() {
   return (
-    <div className="-mx-4 -mb-12">
+    <div className="flex flex-col gap-0 overflow-x-hidden">
       <HeroSection />
       <FeaturesSection />
       <ManifestoSection />

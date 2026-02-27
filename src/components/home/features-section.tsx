@@ -72,7 +72,7 @@ export function FeaturesSection() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section ref={ref} className="relative py-32">
+    <section ref={ref} className="relative py-32 overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/5 rounded-full blur-[150px]" />
 
@@ -92,7 +92,7 @@ export function FeaturesSection() {
           >
             Features
           </motion.span>
-          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
             Everything you need to{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">
               level up

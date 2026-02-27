@@ -58,7 +58,7 @@ export function CommunitySection() {
           <span className="inline-block px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono uppercase tracking-widest mb-6">
             Community
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
             Built by{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">
               builders

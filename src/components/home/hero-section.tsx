@@ -140,8 +140,12 @@ export function HeroSection() {
 
       {/* Content */}
       <motion.div
-        style={{ rotateX, rotateY, perspective: 1000 }}
-        className="relative z-10 space-y-8 max-w-5xl px-4"
+        style={{ 
+          rotateX: typeof window !== 'undefined' && window.innerWidth > 768 ? rotateX : 0, 
+          rotateY: typeof window !== 'undefined' && window.innerWidth > 768 ? rotateY : 0, 
+          perspective: 1000 
+        }}
+        className="relative z-10 space-y-8 max-w-7xl mx-auto px-6"
       >
         {/* Status Badge */}
         <motion.div
@@ -164,7 +168,7 @@ export function HeroSection() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9]"
+          className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-[0.9]"
         >
           {headlineWords.map((word, i) => (
             <motion.span

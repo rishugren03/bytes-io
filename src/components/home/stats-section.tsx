@@ -73,7 +73,7 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="relative py-32">
+    <section className="relative py-32 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -91,7 +91,7 @@ export function StatsSection() {
           <span className="inline-block px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-mono uppercase tracking-widest mb-6">
             Impact
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
             The numbers speak{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-300">
               for themselves
