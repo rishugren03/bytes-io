@@ -12,7 +12,7 @@ interface MentorsClientProps {
 
 export function MentorsClient({ mentors }: MentorsClientProps) {
   return (
-    <div className="space-y-12 pb-20">
+    <div className="md:px-20 px-8 space-y-12 pb-20">
       <header className="space-y-2">
         <h1 className="text-4xl font-bold tracking-tight text-white font-mono">
           <span className="text-primary mr-2">{">"}</span>

@@ -19,7 +19,7 @@ export default async function EventsPage() {
   const events = await getEvents();
 
   return (
-    <main>
+    <main className="md:px-20 px-8">
       <EventsClient 
         initialEvents={events} 
         isAdmin={isAdmin} 

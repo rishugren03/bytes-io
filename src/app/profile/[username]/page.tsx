@@ -23,7 +23,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
   const avatar = profile.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile.username}`;
 
   return (
-    <main className="min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto space-y-12">
+    <main className="md:px-20 px-8 min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto space-y-12">
       {/* Profile Header */}
       <section className="relative overflow-hidden p-8 md:p-12 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />

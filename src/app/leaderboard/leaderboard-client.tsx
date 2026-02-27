@@ -23,7 +23,7 @@ interface LeaderboardClientProps {
 
 export function LeaderboardClient({ users, currentUser }: LeaderboardClientProps) {
   return (
-    <div className="space-y-12 pb-20">
+    <div className="space-y-12 pb-20 md:px-20 px-8">
       <header className="space-y-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">

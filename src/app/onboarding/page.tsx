@@ -62,7 +62,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto py-20 min-h-[80vh] flex flex-col justify-center">
+    <div className="md:px-20 px-8 max-w-xl mx-auto py-20 min-h-[80vh] flex flex-col justify-center">
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div 

@@ -26,7 +26,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] space-y-12">
+    <div className="md:px-20 px-8 flex flex-col items-center justify-center min-h-[80vh] space-y-12">
       <header className="text-center space-y-4">
          <motion.div 
            initial={{ scale: 0.8, opacity: 0 }}
