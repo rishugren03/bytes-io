@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Profile {
@@ -18,10 +19,11 @@ model Profile {
   techStack         String[]        @map("tech_stack")
   powerScore        Int             @default(0) @map("power_score")
   bio               String?
-  role              String          @default("member") // "member" | "admin"
+  role              String          @default("member")
+  status            String          @default("pending")
   projects          Project[]
-  events            Event[]         @relation("EventCreator")
-  resources         Resource[]      @relation("ResourceCreator")
+  eventsCreated     Event[]         @relation("EventCreator")
+  resourcesCreated  Resource[]      @relation("ResourceCreator")
   ratings           ProjectRating[] @relation("UserRatings")
 
   @@map("profiles")

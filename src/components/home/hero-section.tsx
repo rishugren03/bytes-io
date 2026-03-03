@@ -140,11 +140,7 @@ export function HeroSection() {
 
       {/* Content */}
       <motion.div
-        style={{ 
-          rotateX: typeof window !== 'undefined' && window.innerWidth > 768 ? rotateX : 0, 
-          rotateY: typeof window !== 'undefined' && window.innerWidth > 768 ? rotateY : 0, 
-          perspective: 1000 
-        }}
+        style={{ rotateX, rotateY, perspective: 1000 }}
         className="relative z-10 space-y-8 max-w-7xl mx-auto px-6"
       >
         {/* Status Badge */}
@@ -174,13 +170,12 @@ export function HeroSection() {
             <motion.span
               key={word}
               variants={wordVariants}
-              className={`inline-block mr-4 md:mr-6 ${
-                i === 1
+              className={`inline-block mr-4 md:mr-6 ${i === 1
                   ? "text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-300 to-purple-400"
                   : i === 2
-                  ? "italic text-primary"
-                  : "text-white"
-              }`}
+                    ? "italic text-primary"
+                    : "text-white"
+                }`}
             >
               {word}
             </motion.span>

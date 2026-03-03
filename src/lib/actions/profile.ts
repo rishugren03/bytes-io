@@ -28,14 +28,15 @@ export async function updateProfile(userId: string, data: {
         avatarUrl: data.avatarUrl || "",
         techStack: data.techStack || [],
         leetcodeUsername: data.leetcodeUsername || "",
+        status: "pending",
         updatedAt: new Date(),
       }
     });
-    
+
     revalidatePath("/");
     revalidatePath("/members");
     revalidatePath("/leaderboard");
-    
+
     return { success: true, profile };
   } catch (error) {
     console.error("Failed to update profile:", error);

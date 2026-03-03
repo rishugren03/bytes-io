@@ -3,9 +3,8 @@ import { MembersClient } from "./members-client";
 
 export default async function MembersPage() {
   const members = await prisma.profile.findMany({
-    orderBy: {
-      powerScore: 'desc'
-    }
+    where: { status: "approved" },
+    orderBy: { powerScore: 'desc' },
   });
 
   return (

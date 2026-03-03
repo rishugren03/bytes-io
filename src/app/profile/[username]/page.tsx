@@ -27,7 +27,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
       {/* Profile Header */}
       <section className="relative overflow-hidden p-8 md:p-12 rounded-[2.5rem] border border-white/5 bg-white/[0.02] backdrop-blur-3xl">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
-        
+
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left relative z-10">
           <div className="relative">
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl overflow-hidden border-2 border-primary/20 bg-zinc-900 shadow-2xl">
@@ -78,13 +78,13 @@ export default async function ProfilePage({ params }: { params: { username: stri
           </div>
 
           <div className="flex flex-col gap-3 w-full md:w-auto">
-             <div className="p-6 rounded-3xl border border-white/5 bg-white/[0.03] text-center space-y-1 min-w-[160px]">
-                <div className="text-[10px] uppercase tracking-[0.3em] text-white/20 font-mono">Power Score</div>
-                <div className="text-3xl font-black text-primary flex items-center justify-center gap-2">
-                   <Zap className="fill-current" size={24} />
-                   {profile.powerScore}
-                </div>
-             </div>
+            <div className="p-6 rounded-3xl border border-white/5 bg-white/[0.03] text-center space-y-1 min-w-[160px]">
+              <div className="text-[10px] uppercase tracking-[0.3em] text-white/20 font-mono">Power Score</div>
+              <div className="text-3xl font-black text-primary flex items-center justify-center gap-2">
+                <Zap className="fill-current" size={24} />
+                {profile.powerScore}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -95,23 +95,23 @@ export default async function ProfilePage({ params }: { params: { username: stri
         <div className="space-y-8">
           <div className="p-6 rounded-3xl border border-white/5 bg-white/[0.02] space-y-6">
             <h3 className="text-xs font-bold uppercase tracking-widest text-white/40 flex items-center gap-2">
-               <Terminal size={14} />
-               Stats
+              <Terminal size={14} />
+              Stats
             </h3>
             <div className="space-y-4">
-               {[
-                 { label: "LeetCode", value: profile.leetcodeUsername ? `@${profile.leetcodeUsername}` : "—", icon: Code2 },
-                 { label: "Projects", value: profile.projects.length, icon: Rocket },
-                 { label: "Power Score", value: profile.powerScore, icon: Zap },
-               ].map((stat, i) => (
-                 <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5">
-                    <div className="flex items-center gap-3 text-white/60 text-xs font-mono">
-                       <stat.icon size={14} className="text-primary" />
-                       {stat.label}
-                    </div>
-                    <div className="text-white font-bold font-mono">{stat.value}</div>
-                 </div>
-               ))}
+              {[
+                { label: "LeetCode", value: profile.leetcodeUsername ? `@${profile.leetcodeUsername}` : "—", icon: Code2 },
+                { label: "Projects", value: profile.projects.length, icon: Rocket },
+                { label: "Power Score", value: profile.powerScore, icon: Zap },
+              ].map((stat, i) => (
+                <div key={i} className="flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5">
+                  <div className="flex items-center gap-3 text-white/60 text-xs font-mono">
+                    <stat.icon size={14} className="text-primary" />
+                    {stat.label}
+                  </div>
+                  <div className="text-white font-bold font-mono">{stat.value}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -127,21 +127,21 @@ export default async function ProfilePage({ params }: { params: { username: stri
             {profile.projects.map((project) => (
               <div key={project.id} className="p-6 rounded-3xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all group">
                 <div className="flex items-start justify-between mb-4">
-                   <div className="p-3 rounded-2xl bg-primary/10 text-primary">
-                      <Code2 size={20} />
-                   </div>
-                   <div className="flex gap-2">
-                      {project.repoUrl && (
-                        <a href={project.repoUrl} target="_blank" className="p-2 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20">
-                           <Github size={16} />
-                        </a>
-                      )}
-                      {project.demoUrl && (
-                        <a href={project.demoUrl} target="_blank" className="p-2 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20">
-                           <ExternalLink size={16} />
-                        </a>
-                      )}
-                   </div>
+                  <div className="p-3 rounded-2xl bg-primary/10 text-primary">
+                    <Code2 size={20} />
+                  </div>
+                  <div className="flex gap-2">
+                    {project.repoUrl && (
+                      <a href={project.repoUrl} target="_blank" className="p-2 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20">
+                        <Github size={16} />
+                      </a>
+                    )}
+                    {project.demoUrl && (
+                      <a href={project.demoUrl} target="_blank" className="p-2 rounded-xl border border-white/10 text-white/40 hover:text-white hover:border-white/20">
+                        <ExternalLink size={16} />
+                      </a>
+                    )}
+                  </div>
                 </div>
                 <h3 className="text-white font-bold text-lg mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
                 <p className="text-white/40 text-sm line-clamp-2 mb-4 font-mono">
@@ -154,7 +154,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
                 </div>
               </div>
             ))}
-            
+
             {profile.projects.length === 0 && (
               <div className="col-span-full py-20 text-center border border-dashed border-white/5 rounded-3xl">
                 <p className="text-white/20 font-mono italic text-sm">No projects yet.</p>
