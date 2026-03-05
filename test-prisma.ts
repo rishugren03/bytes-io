@@ -14,6 +14,7 @@ const p: Profile = {
   powerScore: 0,
   bio: "test",
   role: "member",
+  status: "approved",
   updatedAt: new Date()
 };
 

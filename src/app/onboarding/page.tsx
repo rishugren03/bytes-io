@@ -38,7 +38,7 @@ export default function OnboardingPage() {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (user) {
-      const result = await updateProfile(user.id, {
+      const result = await updateProfile({
         username: formData.username,
         leetcodeUsername: formData.leetcode_username,
         techStack: formData.tech_stack,

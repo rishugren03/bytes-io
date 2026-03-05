@@ -2,9 +2,9 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "./auth";
 
 export async function createEvent(data: {
-  createdById: string;
   title: string;
   description?: string;
   eventType: string;
@@ -15,19 +15,14 @@ export async function createEvent(data: {
   prizeInfo?: string;
 }) {
   try {
-    // Check if user is admin
-    const profile = await prisma.profile.findUnique({
-      where: { id: data.createdById },
-      select: { role: true },
-    });
-
-    if (!profile || profile.role !== "admin") {
-      return { success: false, error: "Only admins can create events." };
+    const { user, error } = await requireAdmin();
+    if (error || !user) {
+      return { success: false, error: error || "Admin access required." };
     }
 
     const event = await prisma.event.create({
       data: {
-        createdById: data.createdById,
+        createdById: user.id,
         title: data.title,
         description: data.description || null,
         eventType: data.eventType,
@@ -58,15 +53,11 @@ export async function getEvents() {
   });
 }
 
-export async function deleteEvent(eventId: string, userId: string) {
+export async function deleteEvent(eventId: string) {
   try {
-    const profile = await prisma.profile.findUnique({
-      where: { id: userId },
-      select: { role: true },
-    });
-
-    if (!profile || profile.role !== "admin") {
-      return { success: false, error: "Only admins can delete events." };
+    const { user, error } = await requireAdmin();
+    if (error || !user) {
+      return { success: false, error: error || "Admin access required." };
     }
 
     await prisma.event.delete({ where: { id: eventId } });

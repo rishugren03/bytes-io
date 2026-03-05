@@ -125,6 +125,28 @@ export function Navbar() {
                 </Link>
               );
             })}
+            {/* Admin pill — only visible to admins */}
+            {profile?.role === 'admin' && (
+              <Link
+                href="/admin"
+                className={cn(
+                  "relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center gap-2",
+                  pathname === '/admin'
+                    ? "text-primary"
+                    : "text-primary/60 hover:text-primary"
+                )}
+              >
+                {pathname === '/admin' && (
+                  <motion.div
+                    layoutId="active-pill"
+                    className="absolute inset-0 bg-primary/10 rounded-full"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <Shield size={16} />
+                <span className="hidden lg:inline">Admin</span>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -225,6 +247,25 @@ export function Navbar() {
                   </Link>
                 </motion.div>
               ))}
+              {/* Admin link in mobile menu */}
+              {profile?.role === 'admin' && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navItems.length * 0.05 }}
+                >
+                  <Link
+                    href="/admin"
+                    className={cn(
+                      "flex items-center gap-4 text-3xl font-bold tracking-tight py-2 transition-colors",
+                      pathname === '/admin' ? "text-primary" : "text-primary/40 hover:text-primary"
+                    )}
+                  >
+                    <Shield size={28} />
+                    Admin
+                  </Link>
+                </motion.div>
+              )}
             </div>
 
             <div className="mt-auto pt-10 border-t border-white/10">

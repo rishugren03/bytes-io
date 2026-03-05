@@ -10,8 +10,11 @@ export default async function LeaderboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   
   const usersData = await prisma.profile.findMany({
+    where: {
+      status: "approved"
+    },
     orderBy: {
-      powerScore: 'desc'
+      powerScore: 'desc',
     }
   });
 

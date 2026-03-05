@@ -12,9 +12,11 @@ interface ProjectsClientProps {
   initialProjects: any[];
   featuredProjects: any[];
   userId: string | null;
+  userStatus: string | null;
 }
 
-export function ProjectsClient({ initialProjects, featuredProjects, userId }: ProjectsClientProps) {
+export function ProjectsClient({ initialProjects, featuredProjects, userId, userStatus }: ProjectsClientProps) {
+  const isApproved = userStatus === "approved";
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [ratingProjectId, setRatingProjectId] = useState<string | null>(null);
@@ -38,7 +40,6 @@ export function ProjectsClient({ initialProjects, featuredProjects, userId }: Pr
       repoUrl: formData.repoUrl,
       demoUrl: formData.demoUrl,
       tags: formData.tags.split(",").map(t => t.trim()).filter(Boolean),
-      ownerId: userId,
     });
 
     if (result.success) {
@@ -55,7 +56,7 @@ export function ProjectsClient({ initialProjects, featuredProjects, userId }: Pr
     if (!userId) return;
     
     const { rateProject } = await import("@/lib/actions/projects");
-    await rateProject(projectId, userId, score);
+    await rateProject(projectId, score);
     setRatingProjectId(null);
     router.refresh();
   };
@@ -80,7 +81,7 @@ export function ProjectsClient({ initialProjects, featuredProjects, userId }: Pr
           </p>
         </div>
 
-        {userId && (
+        {userId && isApproved && (
           <Button 
             onClick={() => setShowForm(true)}
             className="bg-primary text-black font-bold hover:shadow-[0_0_20px_rgba(0,209,255,0.4)] transition-all flex items-center gap-2"
