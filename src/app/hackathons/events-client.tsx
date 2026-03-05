@@ -41,7 +41,6 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
     
     const { createEvent } = await import("@/lib/actions/events");
     const result = await createEvent({
-      createdById: userId,
       title: formData.title,
       description: formData.description,
       eventType: formData.eventType,

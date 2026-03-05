@@ -19,9 +19,9 @@ interface MemberCardProps {
 }
 
 export function MemberCard({ name, username, avatar, tags, status, level }: MemberCardProps) {
-  // Use GitHub avatar directly if possible, or fallback to an anime-style DiceBear avatar
-  const displayAvatar = avatar && !avatar.includes("pravatar.cc") 
-    ? avatar 
+  // Use GitHub avatar directly if possible, or fallback to a deterministic DiceBear avatar
+  const displayAvatar = avatar && avatar.trim() !== ""
+    ? avatar
     : `https://api.dicebear.com/9.x/adventurer/svg?seed=${username}`;
 
   return (
@@ -31,11 +31,12 @@ export function MemberCard({ name, username, avatar, tags, status, level }: Memb
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
       className="group"
+      suppressHydrationWarning
     >
       <Card className="relative overflow-hidden border-white/10 bg-black/40 backdrop-blur-xl hover:border-primary/20 transition-all duration-300">
         {/* Animated accent gradient */}
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        
+
         <CardContent className="p-6 space-y-4">
           <div className="flex items-start justify-between">
             <div className="relative">
@@ -44,12 +45,12 @@ export function MemberCard({ name, username, avatar, tags, status, level }: Memb
               </div>
               <div className={cn(
                 "absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-black",
-                status === "Active" ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : 
-                status === "Building" ? "bg-primary animate-pulse shadow-[0_0_8px_rgba(0,209,255,0.6)]" : 
-                "bg-zinc-500"
+                status === "Active" ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" :
+                  status === "Building" ? "bg-primary animate-pulse shadow-[0_0_8px_rgba(0,209,255,0.6)]" :
+                    "bg-zinc-500"
               )} />
             </div>
-            
+
             <div className="text-right">
               <div className="text-[10px] uppercase tracking-widest text-white/40 font-mono">Power Lvl</div>
               <div className="text-xl font-bold text-white font-mono">{level}</div>
@@ -66,9 +67,9 @@ export function MemberCard({ name, username, avatar, tags, status, level }: Memb
 
           <div className="flex flex-wrap gap-2">
             {tags.slice(0, 3).map((tag) => (
-              <Badge 
-                key={tag} 
-                variant="outline" 
+              <Badge
+                key={tag}
+                variant="outline"
                 className="bg-white/5 border-white/10 text-white/60 text-[10px] py-0 font-medium hover:bg-white/10"
               >
                 {tag}
@@ -77,9 +78,9 @@ export function MemberCard({ name, username, avatar, tags, status, level }: Memb
           </div>
 
           <div className="pt-2">
-            <Button 
-              size="sm" 
-              variant="outline" 
+            <Button
+              size="sm"
+              variant="outline"
               className="w-full bg-white/5 border-white/10 hover:bg-white/10 hover:text-white transition-all group/btn"
               asChild
             >

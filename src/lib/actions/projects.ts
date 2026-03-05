@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { requireApprovedUser } from "./auth";
 
 export async function registerProject(formData: {
   title: string;
@@ -9,9 +10,13 @@ export async function registerProject(formData: {
   repoUrl: string;
   demoUrl?: string;
   tags: string[];
-  ownerId: string;
 }) {
   try {
+    const { user, error } = await requireApprovedUser();
+    if (error || !user) {
+      return { success: false, error: error || "Authentication required." };
+    }
+
     const project = await prisma.project.create({
       data: {
         title: formData.title,
@@ -19,7 +24,7 @@ export async function registerProject(formData: {
         repoUrl: formData.repoUrl,
         demoUrl: formData.demoUrl || null,
         tags: formData.tags,
-        ownerId: formData.ownerId,
+        ownerId: user.id,
       },
     });
     revalidatePath("/projects");
@@ -46,12 +51,13 @@ export async function getProjects() {
   });
 }
 
-export async function rateProject(
-  projectId: string,
-  userId: string,
-  score: number
-) {
+export async function rateProject(projectId: string, score: number) {
   try {
+    const { user, error } = await requireApprovedUser();
+    if (error || !user) {
+      return { success: false, error: error || "Authentication required." };
+    }
+
     if (score < 1 || score > 5) {
       return { success: false, error: "Score must be between 1 and 5." };
     }
@@ -59,12 +65,12 @@ export async function rateProject(
     // Upsert the rating
     await prisma.projectRating.upsert({
       where: {
-        projectId_userId: { projectId, userId },
+        projectId_userId: { projectId, userId: user.id },
       },
       update: { score },
       create: {
         projectId,
-        userId,
+        userId: user.id,
         score,
       },
     });

@@ -14,6 +14,7 @@ type Profile = Prisma.ProfileGetPayload<{}>;
 interface LeaderboardUser extends Profile {
   rank: number;
   change: string;
+  status: string;
 }
 
 interface LeaderboardClientProps {

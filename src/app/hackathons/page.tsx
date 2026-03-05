@@ -20,10 +20,10 @@ export default async function EventsPage() {
 
   return (
     <main className="md:px-20 px-8">
-      <EventsClient 
-        initialEvents={events} 
-        isAdmin={isAdmin} 
-        userId={user?.id || null} 
+      <EventsClient
+        initialEvents={events}
+        isAdmin={isAdmin}
+        userId={user?.id || null}
       />
     </main>
   );

@@ -9,11 +9,13 @@ import { Input } from "@/components/ui/input";
 interface ResourcesClientProps {
   initialResources: any[];
   userId: string | null;
+  userStatus: string | null;
 }
 
 const CATEGORIES = ["General", "Frontend", "Backend", "DevOps", "AI/ML", "System Design", "Career", "DSA"];
 
-export function ResourcesClient({ initialResources, userId }: ResourcesClientProps) {
+export function ResourcesClient({ initialResources, userId, userStatus }: ResourcesClientProps) {
+  const isApproved = userStatus === "approved";
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState("");
   const [category, setCategory] = useState("All");
@@ -33,7 +35,6 @@ export function ResourcesClient({ initialResources, userId }: ResourcesClientPro
 
     const { createResource } = await import("@/lib/actions/resources");
     const result = await createResource({
-      createdById: userId,
       title: formData.title,
       description: formData.description,
       url: formData.url,
@@ -64,7 +65,7 @@ export function ResourcesClient({ initialResources, userId }: ResourcesClientPro
           </p>
         </div>
 
-        {userId && (
+        {userId && isApproved && (
           <Button 
             onClick={() => setShowForm(true)}
             className="bg-primary text-black font-bold hover:shadow-[0_0_20px_rgba(0,209,255,0.4)] transition-all flex items-center gap-2"
