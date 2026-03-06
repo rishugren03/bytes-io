@@ -19,7 +19,9 @@ export async function getAuthenticatedUser() {
     select: { id: true, role: true, status: true },
   });
 
-  return profile ? { authId: user.id, ...profile } : null;
+  // If the profile doesn't exist yet, return the authenticated user's ID
+  // so that the onboarding route can create the profile later
+  return profile ? { authId: user.id, ...profile } : { authId: user.id, id: user.id };
 }
 
 /**
