@@ -21,7 +21,7 @@ model Profile {
   powerScore        Int             @default(0) @map("power_score")
   bio               String?
   role              String          @default("member")
-  status            String          @default("pending")
+  status            String          @default("approved")
   projects          Project[]
   eventsCreated     Event[]         @relation("EventCreator")
   resourcesCreated  Resource[]      @relation("ResourceCreator")
