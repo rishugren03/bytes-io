@@ -47,7 +47,7 @@ export async function updateProfile(data: {
         techStack: (sanitizedData.techStack as string[]) || [],
         leetcodeUsername: (sanitizedData.leetcodeUsername as string) || "",
         bio: (sanitizedData.bio as string) || "",
-        status: "pending",
+        status: "approved",
         updatedAt: new Date(),
       }
     });
