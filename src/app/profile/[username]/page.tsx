@@ -4,8 +4,14 @@ import prisma from "@/lib/prisma";
 import { Github, Globe, Terminal, Zap, Code2, Rocket, ExternalLink, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
+import { createClient } from "@/utils/supabase/server";
+import { ProfileLogoutButton } from "@/components/profile-logout-button";
+import { EditProfileDialog } from "@/components/edit-profile-dialog";
+
 export default async function ProfilePage({ params }: { params: { username: string } }) {
   const { username } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   const profile = await prisma.profile.findUnique({
     where: { username },
@@ -19,6 +25,8 @@ export default async function ProfilePage({ params }: { params: { username: stri
   if (!profile) {
     notFound();
   }
+
+  const isCurrentUser = user && profile.id === user?.id;
 
   const avatar = profile.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile.username}`;
 
@@ -85,6 +93,12 @@ export default async function ProfilePage({ params }: { params: { username: stri
                 {profile.powerScore}
               </div>
             </div>
+            {isCurrentUser && (
+              <>
+                <EditProfileDialog profile={profile} />
+                <ProfileLogoutButton />
+              </>
+            )}
           </div>
         </div>
       </section>

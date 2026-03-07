@@ -171,13 +171,23 @@ export function Navbar() {
                 <span className="text-[8px] text-primary/60 font-mono flex items-center gap-1 uppercase tracking-widest"><Zap size={8} /> {profile?.power_score || 0}</span>
               </div>
               <div className="relative group/user">
-                <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors bg-zinc-900">
-                  <img
-                    src={user.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile?.username || user.id}`}
-                    alt="User"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                {profile?.username ? (
+                  <Link href={`/profile/${profile.username}`} className="block w-8 h-8 rounded-full border border-white/10 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors bg-zinc-900">
+                    <img
+                      src={user.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile.username}`}
+                      alt="User"
+                      className="w-full h-full object-cover"
+                    />
+                  </Link>
+                ) : (
+                  <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors bg-zinc-900">
+                    <img
+                      src={user.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user.id}`}
+                      alt="User"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <div className="absolute top-full right-0 mt-4 p-2 rounded-xl border border-white/5 bg-black/90 backdrop-blur-xl opacity-0 invisible group-hover/user:opacity-100 group-hover/user:visible transition-all min-w-[160px] shadow-2xl">
                   {profile?.username && (
                     <Link
