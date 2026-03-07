@@ -2,10 +2,10 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { getAuthenticatedUser } from "./auth";
+import { createClient } from "@/utils/supabase/server";
 
 // Only these fields are allowed to be updated by the user
-const ALLOWED_FIELDS = ["username", "fullName", "avatarUrl", "techStack", "leetcodeUsername"] as const;
+const ALLOWED_FIELDS = ["username", "fullName", "avatarUrl", "techStack", "leetcodeUsername", "bio"] as const;
 
 export async function updateProfile(data: {
   username?: string;
@@ -13,9 +13,14 @@ export async function updateProfile(data: {
   avatarUrl?: string;
   techStack?: string[];
   leetcodeUsername?: string;
+  bio?: string;
 }) {
   try {
-    const user = await getAuthenticatedUser();
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
     if (!user) {
       return { success: false, error: "Authentication required." };
     }
@@ -41,6 +46,7 @@ export async function updateProfile(data: {
         avatarUrl: (sanitizedData.avatarUrl as string) || "",
         techStack: (sanitizedData.techStack as string[]) || [],
         leetcodeUsername: (sanitizedData.leetcodeUsername as string) || "",
+        bio: (sanitizedData.bio as string) || "",
         status: "pending",
         updatedAt: new Date(),
       }
