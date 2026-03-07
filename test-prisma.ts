@@ -1,21 +1,19 @@
-import { Prisma, Profile } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
-type ProfilePayload = Prisma.ProfileGetPayload<{}>;
+const prisma = new PrismaClient();
 
-const p: Profile = {
-  id: "test",
-  username: "test",
-  fullName: "test",
-  avatarUrl: "test",
-  website: "test",
-  githubUsername: "test",
-  leetcodeUsername: "test",
-  techStack: [],
-  powerScore: 0,
-  bio: "test",
-  role: "member",
-  status: "approved",
-  updatedAt: new Date()
-};
+async function main() {
+  const updatedUser = await prisma.profile.update({
+    where: { username: 'its yash' },
+    data: { status: 'approved' }
+  });
+  console.log("Approved User:", updatedUser);
+}
 
-console.log(p);
+main()
+  .catch(e => {
+    console.error(e);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

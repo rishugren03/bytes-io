@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check admin role via Supabase REST (Edge-compatible, no Node crypto)
-    const { data: profile } = await supabase
+    const { data: profile, error } = await supabase
       .from('profiles')
       .select('role, status')
       .eq('id', user.id)
