@@ -10,11 +10,12 @@ import { EditProfileDialog } from "@/components/edit-profile-dialog";
 
 export default async function ProfilePage({ params }: { params: { username: string } }) {
   const { username } = await params;
+  const decodedUsername = decodeURIComponent(username);
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   const profile = await prisma.profile.findUnique({
-    where: { username },
+    where: { username: decodedUsername },
     include: {
       projects: {
         orderBy: { createdAt: 'desc' }
@@ -28,7 +29,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
 
   const isCurrentUser = user && profile.id === user?.id;
 
-  const avatar = profile.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile.username}`;
+  const avatar = profile.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(profile.username!)}`;
 
   return (
     <main className="md:px-20 px-8 min-h-screen pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto space-y-12">

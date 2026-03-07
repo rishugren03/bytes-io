@@ -18,12 +18,23 @@ export async function GET(request: Request) {
         // Check if profile exists
         const profile = await prisma.profile.findUnique({
           where: { id: user.id },
-          select: { status: true, role: true, username: true },
+          select: { status: true, role: true, username: true, githubUsername: true },
         })
 
         // No profile or no username yet → go to onboarding
         if (!profile || !profile.username) {
           return NextResponse.redirect(`${origin}/onboarding`)
+        }
+
+        // Auto-backfill githubUsername from Supabase metadata if missing
+        if (!profile.githubUsername) {
+          const ghUsername = user.user_metadata?.user_name || user.user_metadata?.preferred_username || null;
+          if (ghUsername) {
+            await prisma.profile.update({
+              where: { id: user.id },
+              data: { githubUsername: ghUsername }
+            });
+          }
         }
 
         // All other users (pending, approved, rejected) → go home
