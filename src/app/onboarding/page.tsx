@@ -103,7 +103,7 @@ export default function OnboardingPage() {
                     <Check className="text-primary" size={16} />
                   </div>
                 </div>
-                <Button onClick={() => setStep(2)} className="w-full h-14 bg-primary text-black font-bold rounded-2xl flex items-center justify-center gap-2">
+                <Button onClick={() => setStep(2)} disabled={!formData.username.trim()} className="w-full h-14 bg-primary text-black font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
                   Next Stage <ArrowRight size={18} />
                 </Button>
               </div>
