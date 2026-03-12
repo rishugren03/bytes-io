@@ -1,17 +1,22 @@
 import { PrismaClient } from "@prisma/client"
 
 const prismaClientSingleton = () => {
-  return new PrismaClient();
+  return new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+    // In development, we use a single connection to avoid exhaustion during HMR/fast refresh
+    // especially when using Supabase Pooler (PgBouncer)
+    datasourceUrl: process.env.DATABASE_URL + 
+      (process.env.DATABASE_URL?.includes("?") ? "&" : "?") + 
+      (process.env.NODE_ENV === "development" ? "connection_limit=1" : "connection_limit=10")
+  });
 }
 
-declare global {
-  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined
 }
 
-const prisma: ReturnType<typeof prismaClientSingleton> = globalThis.prismaGlobal ?? prismaClientSingleton()
+const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prismaGlobal = prisma
-}
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
 
 export default prisma

@@ -27,23 +27,26 @@ export async function GET(req: Request) {
       return NextResponse.json({ message: "No approved profiles to update" });
     }
 
-    let updatedCount = 0;
-    for (const profile of profilesToUpdate) {
-      try {
-        const powerScore = await calculatePowerScore(profile.id);
-        
-        await prisma.profile.update({
-          where: { id: profile.id },
-          data: { 
-            powerScore, 
-            updatedAt: new Date() 
-          }
-        });
-        updatedCount++;
-      } catch (err) {
-        console.error(`Failed to update score for profile ${profile.id}:`, err);
-      }
-    }
+    const updatedCount = await Promise.all(
+      profilesToUpdate.map(async (profile) => {
+        try {
+          // Fetch external scores in parallel within calculatePowerScore or here
+          const powerScore = await calculatePowerScore(profile.id);
+          
+          await prisma.profile.update({
+            where: { id: profile.id },
+            data: { 
+              powerScore, 
+              updatedAt: new Date() 
+            }
+          });
+          return true;
+        } catch (err) {
+          console.error(`Failed to update score for profile ${profile.id}:`, err);
+          return false;
+        }
+      })
+    ).then(rows => rows.filter(Boolean).length);
 
     return NextResponse.json({ 
       success: true, 

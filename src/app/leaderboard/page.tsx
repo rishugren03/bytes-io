@@ -8,20 +8,29 @@ type Profile = Prisma.ProfileGetPayload<{}>;
 
 export const revalidate = 3600; // Cache for 1 hour
 
+import { unstable_cache } from "next/cache";
+
+const getTopUsers = unstable_cache(
+  async () => {
+    return prisma.profile.findMany({
+      where: {
+        status: "approved"
+      },
+      orderBy: {
+        powerScore: 'desc'
+      },
+      take: 50
+    });
+  },
+  ["leaderboard-top-50"],
+  { revalidate: 3600, tags: ["leaderboard"] }
+);
+
 export default async function LeaderboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   
-  // Fetch only the top 50 users for better initial performance
-  const usersData = await prisma.profile.findMany({
-    where: {
-      status: "approved"
-    },
-    orderBy: {
-      powerScore: 'desc'
-    },
-    take: 50
-  });
+  const usersData = await getTopUsers();
 
   // Update the array map to not fetch calculated scores on load.
   // We'll rely on the existing powerScore in the DB for the initial render,
