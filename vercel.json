@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/update-scores",
-      "schedule": "0 * * * *"
+      "schedule": "0 9 * * *"
     }
   ]
 }
