@@ -5,9 +5,9 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
 import type { Engine, ISourceOptions } from "@tsparticles/engine";
+
+const Particles = dynamic(() => import("@tsparticles/react").then((mod) => mod.default), { ssr: false });
 
 const HeroScene = dynamic(
   () => import("./three-scenes").then((mod) => mod.HeroScene),
@@ -28,9 +28,15 @@ export function HeroSection() {
   const typewriterText = ">> Welcome to the coding revolution_";
 
   useEffect(() => {
-    initParticlesEngine(async (engine: Engine) => {
-      await loadSlim(engine);
-    }).then(() => setParticlesReady(true));
+    const initParticles = async () => {
+      const { initParticlesEngine } = await import("@tsparticles/react");
+      const { loadSlim } = await import("@tsparticles/slim");
+      await initParticlesEngine(async (engine: Engine) => {
+        await loadSlim(engine);
+      });
+      setParticlesReady(true);
+    };
+    initParticles();
   }, []);
 
   useEffect(() => {

@@ -6,39 +6,37 @@ import { calculatePowerScore } from "@/lib/score";
 
 type Profile = Prisma.ProfileGetPayload<{}>;
 
+export const revalidate = 3600; // Cache for 1 hour
+
+import { unstable_cache } from "next/cache";
+
+const getTopUsers = unstable_cache(
+  async () => {
+    return prisma.profile.findMany({
+      where: {
+        status: "approved"
+      },
+      orderBy: {
+        powerScore: 'desc'
+      },
+      take: 50
+    });
+  },
+  ["leaderboard-top-50"],
+  { revalidate: 3600, tags: ["leaderboard"] }
+);
+
 export default async function LeaderboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   
-  const usersData = await prisma.profile.findMany({
-    where: {
-      status: "approved"
-    }
-  });
+  const usersData = await getTopUsers();
 
-  // Calculate scores for all users to ensure leaderboard is always fresh
-  // Note: in a large scale production app, this should be a cron job, but here we calculate on load
-  const usersWithScores = await Promise.all(
-    usersData.map(async (u) => {
-      const powerScore = await calculatePowerScore(u.id);
-      
-      // Update the DB asynchronously without awaiting the result to keep page fast
-      prisma.profile.update({
-        where: { id: u.id },
-        data: { powerScore }
-      }).catch(err => console.error("Failed to update cache score for", u.id, err));
-
-      return {
-        ...u,
-        powerScore
-      };
-    })
-  );
-
-  // Sort them dynamically since we just got the fresh scores
-  const sortedUsers = usersWithScores.sort((a, b) => b.powerScore - a.powerScore);
-
-  const usersWithRank = sortedUsers.map((u: Profile, i: number) => ({
+  // Update the array map to not fetch calculated scores on load.
+  // We'll rely on the existing powerScore in the DB for the initial render,
+  // and introduce a periodic cache revalidation.
+  
+  const usersWithRank = usersData.map((u: Profile, i: number) => ({
     ...u,
     rank: i + 1,
     change: "minus"

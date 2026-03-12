@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   let response = NextResponse.next({ request })
@@ -23,11 +23,10 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Always refresh session (required by Supabase SSR)
-  const { data: { user } } = await supabase.auth.getUser()
-
   // Only gate the admin panel — everything else is public
   if (pathname.startsWith('/admin')) {
+    const { data: { user } } = await supabase.auth.getUser()
+
     if (!user) {
       const loginUrl = new URL('/login', request.url)
       loginUrl.searchParams.set('next', pathname)
@@ -35,7 +34,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check admin role via Supabase REST (Edge-compatible, no Node crypto)
-    const { data: profile, error } = await supabase
+    const { data: profile } = await supabase
       .from('profiles')
       .select('role, status')
       .eq('id', user.id)
@@ -44,6 +43,11 @@ export async function middleware(request: NextRequest) {
     if (!profile || profile.role !== 'admin' || profile.status !== 'approved') {
       return NextResponse.redirect(new URL('/', request.url))
     }
+  } else {
+    // For non-admin paths, we still want to refresh the session if it exists,
+    // but we can do it more lazily or just skip if no cookie is present.
+    // However, to keep it simple and fast for public users, we skip getUser() here.
+    // The session will be refreshed in the RootLayout or on the client.
   }
 
   return response

@@ -34,12 +34,14 @@ const navItems = [
   { name: "Mentors", href: "/mentorship", icon: ShieldCheck },
 ];
 
-export function Navbar() {
+import { User as SupabaseUser } from "@supabase/supabase-js";
+
+export function Navbar({ initialUser, initialProfile }: { initialUser: SupabaseUser | null, initialProfile: any }) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(initialUser);
+  const [profile, setProfile] = useState<any>(initialProfile);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -57,36 +59,45 @@ export function Navbar() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      // Only fetch if we don't have a user or if we explicitly want to refresh
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      setUser(currentUser);
 
-      if (user) {
+      if (currentUser) {
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', user.id)
+          .eq('id', currentUser.id)
           .single();
 
         setProfile(profile);
 
         // If logged in but no username (onboarding not complete)
-        // Don't redirect pending/approved users who haven't done onboarding
         const restrictedPaths = ['/onboarding', '/pending', '/login'];
-        if (user && !profile?.username && !restrictedPaths.some(p => pathname.startsWith(p))) {
+        if (currentUser && !profile?.username && !restrictedPaths.some(p => pathname.startsWith(p))) {
           router.push('/onboarding');
         }
       }
     };
 
-    fetchUser();
+    // If we have initial data, we don't need to fetch on mount
+    if (!initialUser && !initialProfile) {
+      fetchUser();
+    }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) fetchUser();
+      const newUser = session?.user ?? null;
+      if (newUser?.id !== user?.id) {
+        setUser(newUser);
+        if (newUser) fetchUser();
+        else {
+          setProfile(null);
+        }
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase, router, pathname, profile?.username]);
+  }, [supabase, router, pathname, profile?.username, initialUser, initialProfile, user?.id]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -182,7 +193,7 @@ export function Navbar() {
                 ) : (
                   <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors bg-zinc-900">
                     <img
-                      src={user.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user.id}`}
+                      src={user?.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user?.id}`}
                       alt="User"
                       className="w-full h-full object-cover"
                     />
@@ -283,7 +294,7 @@ export function Navbar() {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border border-primary/20 overflow-hidden">
                     <img
-                      src={user.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile?.username || user.id}`}
+                      src={user?.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile?.username || user?.id}`}
                       alt="User"
                       className="w-full h-full object-cover"
                     />

@@ -20,18 +20,40 @@ export const metadata: Metadata = {
   description: "The engineer platform. Competitive dashboards, project showcases, developer registries, and mentorship.",
 };
 
-export default function RootLayout({
+import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
+
+const getCachedProfile = unstable_cache(
+  async (userId: string) => {
+    return prisma.profile.findUnique({
+      where: { id: userId }
+    });
+  },
+  ["user-profile"],
+  { revalidate: 300, tags: ["profile"] }
+);
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  let profile = null;
+  if (user) {
+    profile = await getCachedProfile(user.id);
+  }
+
   return (
     <html lang="en" className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen selection:bg-primary/30 selection:text-primary`}
       >
         <RootProviders>
-          <Navbar />
+          <Navbar initialUser={user} initialProfile={profile} />
           <main className="pt-24 pb-12">
             {children}
           </main>
