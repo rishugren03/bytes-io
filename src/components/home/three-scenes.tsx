@@ -34,7 +34,7 @@ function GlowingSphere() {
 }
 
 function ParticleField() {
-  const count = 200;
+  const count = typeof window !== 'undefined' && window.innerWidth < 768 ? 100 : 200;
   const pointsRef = useRef<THREE.Points>(null);
 
   const particlesPosition = useMemo(() => {
@@ -81,8 +81,8 @@ export function HeroScene() {
       <Canvas
         camera={{ position: [0, 0, 5], fov: 45 }}
         style={{ pointerEvents: "none" }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : [1, 1.5]}
+        gl={{ antialias: typeof window !== 'undefined' && window.innerWidth >= 768, alpha: true }}
       >
         <ambientLight intensity={0.3} />
         <pointLight position={[5, 5, 5]} intensity={0.5} color="#00d1ff" />
@@ -97,8 +97,9 @@ export function HeroScene() {
 function WaveGrid() {
   const geometryRef = useRef<THREE.PlaneGeometry>(null);
 
-  const segW = 40;
-  const segH = 40;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const segW = isMobile ? 20 : 40;
+  const segH = isMobile ? 20 : 40;
 
   useFrame(({ clock }) => {
     if (!geometryRef.current) return;
@@ -135,8 +136,8 @@ export function ManifestoScene() {
       <Canvas
         camera={{ position: [0, 2, 6], fov: 50 }}
         style={{ pointerEvents: "none" }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : [1, 1.5]}
+        gl={{ antialias: typeof window !== 'undefined' && window.innerWidth >= 768, alpha: true }}
       >
         <ambientLight intensity={0.2} />
         <pointLight position={[0, 5, 5]} intensity={0.4} color="#00d1ff" />
@@ -148,7 +149,7 @@ export function ManifestoScene() {
 
 function GlobePoints() {
   const groupRef = useRef<THREE.Group>(null);
-  const count = 800;
+  const count = typeof window !== 'undefined' && window.innerWidth < 768 ? 300 : 800;
 
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
@@ -205,8 +206,8 @@ export function CTAScene() {
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
         style={{ pointerEvents: "none" }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        dpr={typeof window !== 'undefined' && window.innerWidth < 768 ? 1 : [1, 1.5]}
+        gl={{ antialias: typeof window !== 'undefined' && window.innerWidth >= 768, alpha: true }}
       >
         <ambientLight intensity={0.2} />
         <pointLight position={[3, 3, 5]} intensity={0.5} color="#00d1ff" />

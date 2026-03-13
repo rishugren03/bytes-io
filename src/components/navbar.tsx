@@ -177,15 +177,18 @@ export function Navbar({ initialUser, initialProfile }: { initialUser: SupabaseU
 
           {user ? (
             <div className="flex items-center gap-3 pr-2 ml-auto md:ml-0">
-              <div className="flex flex-col items-end hidden sm:flex">
-                <span className="text-[10px] text-white font-bold leading-none">@{profile?.username || 'initialized'}</span>
-                <span className="text-[8px] text-primary/60 font-mono flex items-center gap-1 uppercase tracking-widest"><Zap size={8} /> {profile?.power_score || 0}</span>
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] text-white font-bold leading-none hidden sm:block">@{profile?.username || 'initialized'}</span>
+                <span className="text-[10px] sm:text-[8px] text-primary font-mono flex items-center gap-1 uppercase tracking-widest leading-none mt-1 sm:mt-0">
+                  <Zap size={10} className="sm:w-2 sm:h-2" /> 
+                  {profile?.power_score ?? profile?.powerScore ?? 0}
+                </span>
               </div>
               <div className="relative group/user">
                 {profile?.username ? (
                   <Link href={`/profile/${profile.username}`} className="block w-8 h-8 rounded-full border border-white/10 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors bg-zinc-900">
                     <img
-                      src={user.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile.username}`}
+                      src={user.user_metadata?.avatar_url || profile?.avatar_url || profile?.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile.username}`}
                       alt="User"
                       className="w-full h-full object-cover"
                     />
@@ -193,7 +196,7 @@ export function Navbar({ initialUser, initialProfile }: { initialUser: SupabaseU
                 ) : (
                   <div className="w-8 h-8 rounded-full border border-white/10 overflow-hidden cursor-pointer hover:border-primary/50 transition-colors bg-zinc-900">
                     <img
-                      src={user?.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user?.id}`}
+                      src={user?.user_metadata?.avatar_url || profile?.avatar_url || profile?.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${user?.id}`}
                       alt="User"
                       className="w-full h-full object-cover"
                     />
@@ -239,7 +242,7 @@ export function Navbar({ initialUser, initialProfile }: { initialUser: SupabaseU
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
             animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            className="fixed inset-0 z-[60] bg-black/80 flex flex-col p-8 pt-24 overflow-y-auto"
+            className="fixed inset-0 z-[60] bg-black/80 flex flex-col p-8 pt-24 overflow-y-auto will-change-[opacity,backdrop-filter] md:backdrop-blur-xl backdrop-blur-md"
           >
             <button
               onClick={() => setIsMobileMenuOpen(false)}
@@ -294,14 +297,18 @@ export function Navbar({ initialUser, initialProfile }: { initialUser: SupabaseU
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border border-primary/20 overflow-hidden">
                     <img
-                      src={user?.user_metadata?.avatar_url || profile?.avatar_url || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile?.username || user?.id}`}
+                      src={user?.user_metadata?.avatar_url || profile?.avatar_url || profile?.avatarUrl || `https://api.dicebear.com/9.x/adventurer/svg?seed=${profile?.username || user?.id}`}
                       alt="User"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div>
                     <h4 className="text-white font-bold">@{profile.username}</h4>
-                    <p className="text-primary/60 text-xs font-mono uppercase tracking-widest">{profile.power_score} Power Score</p>
+                    <div className="flex items-center gap-1 mt-1">
+                      <Zap size={14} className="text-primary" />
+                      <span className="text-xl font-bold text-white leading-none">{profile.power_score ?? profile.powerScore ?? 0}</span>
+                    </div>
+                    <p className="text-primary/60 text-[10px] font-mono uppercase tracking-widest mt-0.5">Power Score</p>
                   </div>
                 </div>
               ) : (

@@ -28,7 +28,7 @@ export function CTASection({ user }: { user?: User | null }) {
 
           {/* Animated gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20 animate-gradient-shift" />
-          <div className="absolute inset-0 bg-[#050505]/60 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-[#050505]/60 md:backdrop-blur-sm" />
 
           {/* Grid overlay */}
           <div
@@ -47,7 +47,7 @@ export function CTASection({ user }: { user?: User | null }) {
               y: [0, -20, 10, 0],
             }}
             transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            className="absolute top-10 right-20 w-32 h-32 bg-primary/20 rounded-full blur-[60px]"
+            className="absolute top-10 right-20 w-32 h-32 bg-primary/20 rounded-full blur-[40px] md:blur-[60px]"
           />
           <motion.div
             animate={{
@@ -55,7 +55,7 @@ export function CTASection({ user }: { user?: User | null }) {
               y: [0, 15, -25, 0],
             }}
             transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
-            className="absolute bottom-10 left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-[80px]"
+            className="absolute bottom-10 left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-[50px] md:blur-[80px]"
           />
 
           {/* Content */}

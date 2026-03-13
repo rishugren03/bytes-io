@@ -30,6 +30,7 @@ export function HeroSection({ user }: { user?: User | null }) {
 
   useEffect(() => {
     const initParticles = async () => {
+      if (typeof window === 'undefined' || window.innerWidth < 768) return; // Skip particles on mobile/server
       const { initParticlesEngine } = await import("@tsparticles/react");
       const { loadSlim } = await import("@tsparticles/slim");
       await initParticlesEngine(async (engine: Engine) => {
@@ -56,6 +57,7 @@ export function HeroSection({ user }: { user?: User | null }) {
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
+      if (window.matchMedia('(pointer: coarse)').matches) return;
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     },
@@ -141,9 +143,9 @@ export function HeroSection({ user }: { user?: User | null }) {
       {/* <HeroScene /> */}
 
       {/* Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] animate-pulse [animation-delay:1s]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]" />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[80px] md:blur-[120px] animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[70px] md:blur-[100px] animate-pulse [animation-delay:1s]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[100px] md:blur-[150px]" />
 
       {/* Content */}
       <motion.div
