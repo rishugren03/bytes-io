@@ -6,25 +6,18 @@ import { calculatePowerScore } from "@/lib/score";
 
 type Profile = Prisma.ProfileGetPayload<{}>;
 
-export const revalidate = 3600; // Cache for 1 hour
+const getTopUsers = async () => {
+  return prisma.profile.findMany({
+    where: {
+      status: "approved"
+    },
+    orderBy: {
+      powerScore: 'desc'
+    },
+    take: 50
+  });
+};
 
-import { unstable_cache } from "next/cache";
-
-const getTopUsers = unstable_cache(
-  async () => {
-    return prisma.profile.findMany({
-      where: {
-        status: "approved"
-      },
-      orderBy: {
-        powerScore: 'desc'
-      },
-      take: 50
-    });
-  },
-  ["leaderboard-top-50"],
-  { revalidate: 3600, tags: ["leaderboard"] }
-);
 
 export default async function LeaderboardPage() {
   const supabase = await createClient();
