@@ -85,11 +85,19 @@ export default function OnboardingPage() {
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 font-mono">@</span>
                     <Input
                       placeholder="quant_dev"
-                      className={`${STYLES.input} pl-8 font-mono`}
+                      className={`${STYLES.input} pl-8 font-mono ${formData.username && !/^[a-z0-9_]+$/.test(formData.username) ? "border-red-500/50" : ""}`}
                       value={formData.username}
-                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value.toLowerCase() })}
                     />
                   </div>
+                  {formData.username && !/^[a-z0-9_]+$/.test(formData.username) && (
+                    <p className="text-[10px] text-red-500/60 mt-2 font-mono uppercase tracking-wider">
+                      Invalid characters detected
+                    </p>
+                  )}
+                  <p className="text-[10px] text-white/20 mt-2 font-mono uppercase tracking-wider">
+                    Use small letters, numbers, and underscores only
+                  </p>
                 </div>
                 <div>
                   <label className={STYLES.label}>GitHub Instance</label>
@@ -103,7 +111,11 @@ export default function OnboardingPage() {
                     <Check className="text-primary" size={16} />
                   </div>
                 </div>
-                <Button onClick={() => setStep(2)} disabled={!formData.username.trim()} className="w-full h-14 bg-primary text-black font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                <Button 
+                  onClick={() => setStep(2)} 
+                  disabled={!formData.username.trim() || !/^[a-z0-9_]+$/.test(formData.username)} 
+                  className="w-full h-14 bg-primary text-black font-bold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
                   Next Stage <ArrowRight size={18} />
                 </Button>
               </div>
