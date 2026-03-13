@@ -23,7 +23,16 @@ interface LeaderboardClientProps {
 }
 
 export function LeaderboardClient({ users, currentUser }: LeaderboardClientProps) {
+  React.useEffect(() => {
+    // Trigger background refresh on mount
+    // Fire and forget, no need to wait for response
+    fetch("/api/refresh", { method: "POST" }).catch((err) => {
+      console.error("Failed to trigger background refresh:", err);
+    });
+  }, []);
+
   return (
+
     <div className="space-y-12 pb-20 md:px-20 px-8">
       <header className="space-y-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
