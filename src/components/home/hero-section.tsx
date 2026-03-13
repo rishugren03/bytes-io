@@ -2,10 +2,11 @@
 
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Trophy } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { Engine, ISourceOptions } from "@tsparticles/engine";
+import { User } from "@supabase/supabase-js";
 
 const Particles = dynamic(() => import("@tsparticles/react").then((mod) => mod.default), { ssr: false });
 
@@ -16,7 +17,7 @@ const HeroScene = dynamic(
 
 const headlineWords = ["Build.", "Compete.", "Ship."];
 
-export function HeroSection() {
+export function HeroSection({ user }: { user?: User | null }) {
   const [displayText, setDisplayText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
   const [particlesReady, setParticlesReady] = useState(false);
@@ -137,7 +138,7 @@ export function HeroSection() {
       )}
 
       {/* 3D Scene */}
-      <HeroScene />
+      {/* <HeroScene /> */}
 
       {/* Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
@@ -217,17 +218,31 @@ export function HeroSection() {
           transition={{ delay: 1.5, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
         >
-          <Link
-            href="/login"
-            className="group relative flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-primary text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(0,209,255,0.3)] hover:shadow-[0_0_60px_rgba(0,209,255,0.5)]"
-          >
-            <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-            Join the Registry
-            <ArrowRight
-              size={20}
-              className="group-hover:translate-x-1 transition-transform"
-            />
-          </Link>
+          {user ? (
+            <Link
+              href="/leaderboard"
+              className="group relative flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-primary text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(0,209,255,0.3)] hover:shadow-[0_0_60px_rgba(0,209,255,0.5)]"
+            >
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+              View Leaderboard
+              <Trophy
+                size={20}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="group relative flex items-center justify-center gap-3 px-10 py-4 rounded-full bg-primary text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(0,209,255,0.3)] hover:shadow-[0_0_60px_rgba(0,209,255,0.5)]"
+            >
+              <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+              Join the Registry
+              <ArrowRight
+                size={20}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </Link>
+          )}
 
           <Link
             href="/projects"

@@ -4,13 +4,15 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { Trophy } from "lucide-react";
+import { User } from "@supabase/supabase-js";
 
 const CTAScene = dynamic(
   () => import("./three-scenes").then((mod) => mod.CTAScene),
   { ssr: false }
 );
 
-export function CTASection() {
+export function CTASection({ user }: { user?: User | null }) {
   return (
     <section className="relative py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
@@ -99,18 +101,31 @@ export function CTASection() {
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
             >
-              <Link
-                href="/login"
-                className="group relative inline-flex items-center gap-3 px-12 py-5 rounded-full bg-primary text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(0,209,255,0.4)] hover:shadow-[0_0_80px_rgba(0,209,255,0.6)]"
-              >
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
-                <span className="relative z-10">Get Started</span>
-                <ArrowRight
-                  size={20}
-                  className="relative z-10 group-hover:translate-x-1 transition-transform"
-                />
-              </Link>
+              {user ? (
+                <Link
+                  href="/leaderboard"
+                  className="group relative inline-flex items-center gap-3 px-12 py-5 rounded-full bg-primary text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(0,209,255,0.4)] hover:shadow-[0_0_80px_rgba(0,209,255,0.6)]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                  <span className="relative z-10">View Leaderboard</span>
+                  <Trophy
+                    size={20}
+                    className="relative z-10 group-hover:translate-x-1 transition-transform"
+                  />
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="group relative inline-flex items-center gap-3 px-12 py-5 rounded-full bg-primary text-black font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(0,209,255,0.4)] hover:shadow-[0_0_80px_rgba(0,209,255,0.6)]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out" />
+                  <span className="relative z-10">Get Started</span>
+                  <ArrowRight
+                    size={20}
+                    className="relative z-10 group-hover:translate-x-1 transition-transform"
+                  />
+                </Link>
+              )}
             </motion.div>
 
             {/* Social proof */}

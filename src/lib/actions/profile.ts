@@ -35,6 +35,26 @@ export async function updateProfile(data: {
       }
     }
 
+    // Server-side username validation
+    if (sanitizedData.username) {
+      const username = sanitizedData.username as string;
+      if (!/^[a-z0-9_]+$/.test(username)) {
+        return { success: false, error: "Username can only contain small letters, numbers, and underscores." };
+      }
+
+      // Check for uniqueness
+      const existingUser = await prisma.profile.findFirst({
+        where: {
+          username: username,
+          NOT: { id: user.id }
+        }
+      });
+
+      if (existingUser) {
+        return { success: false, error: "Username already taken." };
+      }
+    }
+
     // Auto-populate githubUsername from Supabase user metadata if not provided
     if (!sanitizedData.githubUsername) {
       const ghUsername = user.user_metadata?.user_name || user.user_metadata?.preferred_username || "";
