@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface EventsClientProps {
   initialEvents: any[];
@@ -38,7 +39,7 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
   const handleCreate = async () => {
     if (!userId) return;
     setSubmitting(true);
-    
+
     const { createEvent } = await import("@/lib/actions/events");
     const result = await createEvent({
       title: formData.title,
@@ -85,13 +86,13 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
             Event Portal
           </h1>
           <p className="text-white/40 font-mono text-sm max-w-2xl">
-            Hackathons, workshops, and meetups by Bytes.io. Browse upcoming events 
+            Hackathons, workshops, and meetups by Bytes.io. Browse upcoming events
             or submit your own if you&apos;re an admin.
           </p>
         </div>
 
         {isAdmin && (
-          <Button 
+          <Button
             onClick={() => setShowCreateForm(true)}
             className="bg-primary text-black font-bold hover:shadow-[0_0_20px_rgba(0,209,255,0.4)] transition-all flex items-center gap-2"
           >
@@ -126,7 +127,7 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
               </div>
 
               <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{event.title}</h3>
-              
+
               {event.description && (
                 <p className="text-white/40 text-sm font-mono line-clamp-2">{event.description}</p>
               )}
@@ -163,10 +164,15 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
                 )}
               </div>
 
-              <div className="border-t border-white/5 pt-4 mt-4">
+              <div className="border-t border-white/5 pt-4 mt-4 flex items-center justify-between">
                 <div className="text-[10px] text-white/20 font-mono">
                   Created by @{event.createdBy?.username || "admin"}
                 </div>
+                <Link href={`/hackathons/${event.id}`}>
+                  <Button className="bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:shadow-[0_0_15px_rgba(0,209,255,0.2)] font-mono text-xs px-4 py-1 h-8 rounded-xl transition-all flex items-center gap-1.5">
+                    Details <ChevronRight size={14} />
+                  </Button>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -185,14 +191,14 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
       <AnimatePresence>
         {showCreateForm && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-black/80 backdrop-blur-sm"
               onClick={() => { setShowCreateForm(false); setStep(1); }}
             />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -222,22 +228,22 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
                     <div className="space-y-4">
                       <div>
                         <label className={STYLES.label}>Event Title</label>
-                        <Input placeholder="e.g. ByteHack 2026" className={STYLES.input} value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} />
+                        <Input placeholder="e.g. ByteHack 2026" className={STYLES.input} value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
                       </div>
                       <div>
                         <label className={STYLES.label}>Description</label>
-                        <textarea 
-                          placeholder="What's this event about?" 
+                        <textarea
+                          placeholder="What's this event about?"
                           className={`${STYLES.input} w-full rounded-md border px-3 py-2 min-h-[100px] bg-white/5 border-white/10 text-white focus:ring-1 focus:ring-primary/50 focus:outline-none`}
-                          value={formData.description} 
-                          onChange={(e) => setFormData({...formData, description: e.target.value})} 
+                          value={formData.description}
+                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         />
                       </div>
                       <div>
                         <label className={STYLES.label}>Event Type</label>
                         <div className="flex gap-2">
                           {EVENT_TYPES.map(t => (
-                            <button key={t.value} onClick={() => setFormData({...formData, eventType: t.value})}
+                            <button key={t.value} onClick={() => setFormData({ ...formData, eventType: t.value })}
                               className={cn(
                                 "flex-1 p-3 rounded-xl border font-mono text-xs transition-all flex items-center justify-center gap-2",
                                 formData.eventType === t.value ? "bg-primary border-primary text-black font-bold" : "bg-white/5 border-white/10 text-white/40 hover:border-white/20"
@@ -263,16 +269,16 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className={STYLES.label}>Start Date</label>
-                          <Input type="datetime-local" className={STYLES.input} value={formData.startDate} onChange={(e) => setFormData({...formData, startDate: e.target.value})} />
+                          <Input type="datetime-local" className={STYLES.input} style={{ colorScheme: "dark" }} value={formData.startDate} onChange={(e) => setFormData({ ...formData, startDate: e.target.value })} />
                         </div>
                         <div>
                           <label className={STYLES.label}>End Date</label>
-                          <Input type="datetime-local" className={STYLES.input} value={formData.endDate} onChange={(e) => setFormData({...formData, endDate: e.target.value})} />
+                          <Input type="datetime-local" className={STYLES.input} style={{ colorScheme: "dark" }} value={formData.endDate} onChange={(e) => setFormData({ ...formData, endDate: e.target.value })} />
                         </div>
                       </div>
                       <div>
                         <label className={STYLES.label}>Location (optional)</label>
-                        <Input placeholder="e.g. Innovation Lab" className={STYLES.input} value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} />
+                        <Input placeholder="e.g. Innovation Lab" className={STYLES.input} value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
                       </div>
                     </div>
                     <div className="flex gap-4">
@@ -291,11 +297,11 @@ export function EventsClient({ initialEvents, isAdmin, userId }: EventsClientPro
                     <div className="space-y-4">
                       <div>
                         <label className={STYLES.label}>Max Team Size (optional)</label>
-                        <Input type="number" placeholder="e.g. 4" className={STYLES.input} value={formData.maxTeamSize} onChange={(e) => setFormData({...formData, maxTeamSize: e.target.value})} />
+                        <Input type="number" placeholder="e.g. 4" className={STYLES.input} value={formData.maxTeamSize} onChange={(e) => setFormData({ ...formData, maxTeamSize: e.target.value })} />
                       </div>
                       <div>
                         <label className={STYLES.label}>Prize Info (optional)</label>
-                        <Input placeholder="e.g. $5,000 + Internship Track" className={STYLES.input} value={formData.prizeInfo} onChange={(e) => setFormData({...formData, prizeInfo: e.target.value})} />
+                        <Input placeholder="e.g. $5,000 + Internship Track" className={STYLES.input} value={formData.prizeInfo} onChange={(e) => setFormData({ ...formData, prizeInfo: e.target.value })} />
                       </div>
                     </div>
                     <div className="flex gap-4">

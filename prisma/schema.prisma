@@ -50,21 +50,37 @@ model Project {
 }
 
 model Event {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  createdById String   @map("created_by_id") @db.Uuid
+  id          String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt   DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdById String             @map("created_by_id") @db.Uuid
   title       String
   description String?
-  eventType   String   @default("hackathon") @map("event_type")
-  startDate   DateTime @map("start_date") @db.Timestamptz(6)
-  endDate     DateTime @map("end_date") @db.Timestamptz(6)
+  eventType   String             @default("hackathon") @map("event_type")
+  startDate   DateTime           @map("start_date") @db.Timestamptz(6)
+  endDate     DateTime           @map("end_date") @db.Timestamptz(6)
   location    String?
-  maxTeamSize Int?     @map("max_team_size")
-  prizeInfo   String?  @map("prize_info")
-  status      String   @default("upcoming")
-  createdBy   Profile  @relation("EventCreator", fields: [createdById], references: [id])
+  maxTeamSize Int?               @map("max_team_size")
+  prizeInfo   String?            @map("prize_info")
+  status      String             @default("upcoming")
+  createdBy   Profile            @relation("EventCreator", fields: [createdById], references: [id])
+  problems    ProblemStatement[]
 
   @@map("events")
+}
+
+model ProblemStatement {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  eventId       String   @map("event_id") @db.Uuid
+  problemNumber Int      @map("problem_number")
+  title         String
+  description   String?
+  difficulty    String   @default("medium")
+  submissions   Int      @default(0)
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, problemNumber])
+  @@map("problem_statements")
 }
 
 model Resource {
